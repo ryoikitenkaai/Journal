@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Handwriters Publication — Scopus Journal Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #060b14;
+      --surface:   #0d1525;
+      --surface2:  #111c2e;
+      --border:    rgba(0,230,120,0.15);
+      --green:     #00e676;
+      --cyan:      #00d4ff;
+      --purple:    #a78bfa;
+      --amber:     #fbbf24;
+      --red:       #f87171;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --glow:      0 0 20px rgba(0,230,120,0.3);
+      --glow2:     0 0 30px rgba(0,212,255,0.25);
+      --radius:    16px;
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND GRID ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,230,120,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,230,120,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* ── FLOATING PARTICLES ── */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: float linear infinite;
+      opacity: 0;
+    }
+    @keyframes float {
+      0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(6,11,20,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .header-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--glow);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: transparent;
+    }
+    .logo-icon img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+    }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem; font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+    }
+    .logo-sub {
+      font-size: 0.65rem; font-weight: 500;
+      color: var(--muted); letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--green); }
+    .badge-live {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,230,120,0.1);
+      border: 1px solid rgba(0,230,120,0.3);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--green); letter-spacing: 0.08em;
+    }
+    .badge-live .dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse-dot 1.5s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.6); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 100px 2rem 60px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 30px;
+      padding: 6px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem; color: var(--cyan);
+      margin-bottom: 28px;
+      letter-spacing: 0.08em;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #e2e8f0 30%, var(--green) 70%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 680px; margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-cta {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: all var(--transition);
+      border: none; outline: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), #00b858);
+      color: #060b14;
+      box-shadow: 0 4px 20px rgba(0,230,120,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,230,120,0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--cyan);
+      border: 1px solid rgba(0,212,255,0.4);
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,255,0.08);
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .stats-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 22px 24px;
+      border-right: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(0,230,120,0.04); }
+    .stat-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .stat-icon.green  { background: rgba(0,230,120,0.12); color: var(--green); }
+    .stat-icon.cyan   { background: rgba(0,212,255,0.12); color: var(--cyan); }
+    .stat-icon.purple { background: rgba(167,139,250,0.12); color: var(--purple); }
+    .stat-icon.amber  { background: rgba(251,191,36,0.12); color: var(--amber); }
+    .stat-label {
+      font-size: 0.72rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 2px;
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem; font-weight: 700;
+      color: var(--text);
+    }
+    .stat-value span { color: var(--green); }
+
+    /* ── SECTION ── */
+    .section {
+      position: relative; z-index: 1;
+      padding: 80px 2rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .section-header {
+      margin-bottom: 48px;
+    }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--green); letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before {
+      content: '//'; color: var(--muted); font-weight: 300;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .section-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── JOURNAL GRID ── */
+    .journals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── JOURNAL CARD ── */
+    .journal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all var(--transition);
+      position: relative;
+      display: flex; flex-direction: column;
+    }
+    .journal-card:hover {
+      border-color: rgba(0,230,120,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow);
+    }
+    .journal-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .journal-card:hover::before { transform: scaleX(1); }
+
+    .card-header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      position: relative;
+    }
+    .card-q-badge {
+      display: inline-flex; align-items: center;
+      background: linear-gradient(135deg, rgba(0,230,120,0.15), rgba(0,212,255,0.1));
+      border: 1px solid rgba(0,230,120,0.3);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 700;
+      color: var(--green);
+      margin-bottom: 10px;
+      letter-spacing: 0.1em;
+    }
+    .card-name {
+      font-size: 0.98rem; font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .card-issn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .card-body { padding: 16px 24px; flex: 1; }
+    .card-subject {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .card-subject i { color: var(--purple); margin-top: 2px; flex-shrink: 0; }
+
+    .card-footer {
+      padding: 14px 24px 20px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .card-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem; font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition);
+      letter-spacing: 0.04em;
+    }
+    .card-link.scopus {
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.25);
+      color: var(--cyan);
+    }
+    .card-link.scopus:hover {
+      background: rgba(0,212,255,0.18);
+      border-color: var(--cyan);
+      box-shadow: 0 0 16px rgba(0,212,255,0.2);
+    }
+    .card-link.website {
+      background: rgba(0,230,120,0.08);
+      border: 1px solid rgba(0,230,120,0.25);
+      color: var(--green);
+    }
+    .card-link.website:hover {
+      background: rgba(0,230,120,0.18);
+      border-color: var(--green);
+      box-shadow: var(--glow);
+    }
+
+    /* ── ADMIN EDIT OVERLAY ── */
+    .admin-edit-btn {
+      display: none;
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      background: rgba(251,191,36,0.15);
+      border: 1px solid rgba(251,191,36,0.4);
+      border-radius: 8px;
+      color: var(--amber);
+      font-size: 0.75rem;
+      cursor: pointer; align-items: center; justify-content: center;
+      transition: all var(--transition);
+      z-index: 10;
+    }
+    .admin-edit-btn:hover {
+      background: rgba(251,191,36,0.3);
+      box-shadow: 0 0 16px rgba(251,191,36,0.3);
+      transform: scale(1.1);
+    }
+    body.admin-mode .admin-edit-btn { display: flex; }
+
+    /* Inline edit inputs */
+    .editable {
+      background: transparent;
+      border: none;
+      color: inherit;
+      font: inherit;
+      width: 100%;
+      resize: none;
+      outline: none;
+      cursor: default;
+    }
+    .edit-active .editable {
+      background: rgba(251,191,36,0.06);
+      border: 1px solid rgba(251,191,36,0.35);
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: text;
+      color: var(--text);
+    }
+    .edit-active .card-link.editable-url {
+      border-style: dashed;
+    }
+
+    /* Save / Cancel controls */
+    .edit-controls {
+      display: none;
+      padding: 0 24px 16px;
+      gap: 8px;
+    }
+    .edit-active .edit-controls { display: flex; }
+    .btn-save, .btn-cancel {
+      padding: 6px 16px; border-radius: 7px;
+      font-size: 0.75rem; font-weight: 700;
+      cursor: pointer; border: none; outline: none;
+      transition: all var(--transition); letter-spacing: 0.06em;
+    }
+    .btn-save {
+      background: linear-gradient(135deg, var(--green), #00b858);
+      color: #060b14;
+    }
+    .btn-save:hover { box-shadow: var(--glow); transform: translateY(-1px); }
+    .btn-cancel {
+      background: rgba(248,113,113,0.12);
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--red);
+    }
+    .btn-cancel:hover { background: rgba(248,113,113,0.22); }
+
+    /* ── CONTACT STRIP ── */
+    .contact-strip {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 2rem;
+    }
+    .contact-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 28px;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 12px; }
+    .contact-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.9rem;
+    }
+    .contact-item i {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+    }
+    .contact-item.email i  { background: rgba(167,139,250,0.15); color: var(--purple); }
+    .contact-item.web i    { background: rgba(0,230,120,0.12); color: var(--green); }
+    .contact-item a { color: var(--text); text-decoration: none; transition: color var(--transition); }
+    .contact-item a:hover { color: var(--green); }
+    .cfp-badge {
+      background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(248,113,113,0.08));
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: var(--radius);
+      padding: 20px 28px;
+      text-align: center;
+    }
+    .cfp-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--amber); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .cfp-text {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 32px 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    footer p {
+      font-size: 0.78rem; color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    footer span { color: var(--green); }
+
+    /* ── ADMIN FLOATING BUTTON ── */
+    .admin-fab {
+      position: fixed; bottom: 32px; right: 32px; z-index: 200;
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 1px solid rgba(251,191,36,0.35);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.1rem;
+      color: var(--amber);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: all var(--transition);
+    }
+    body.admin-mode .admin-fab {
+      background: linear-gradient(135deg, var(--amber), #f59e0b);
+      color: #060b14;
+      border-color: var(--amber);
+      box-shadow: 0 8px 32px rgba(251,191,36,0.4);
+    }
+    .admin-fab:hover { transform: scale(1.1) translateY(-2px); }
+    .admin-fab-tooltip {
+      position: absolute; bottom: 60px; right: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.72rem; color: var(--muted);
+      white-space: nowrap; pointer-events: none;
+      opacity: 0; transform: translateY(6px);
+      transition: all var(--transition);
+    }
+    .admin-fab:hover .admin-fab-tooltip { opacity: 1; transform: translateY(0); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(6,11,20,0.85);
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .modal-overlay.show { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%; max-width: 420px;
+      transform: translateY(20px) scale(0.97);
+      transition: transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-overlay.show .modal { transform: translateY(0) scale(1); }
+    .modal::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--amber), #f59e0b, var(--amber));
+    }
+    .modal-icon {
+      width: 56px; height: 56px;
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.3);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: var(--amber);
+      margin: 0 auto 20px;
+    }
+    .modal h2 {
+      text-align: center;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .modal p {
+      text-align: center;
+      font-size: 0.82rem; color: var(--muted);
+      margin-bottom: 28px;
+    }
+    .input-group { position: relative; margin-bottom: 20px; }
+    .input-group label {
+      display: block;
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--muted); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .input-group input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem; color: var(--text);
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      letter-spacing: 0.2em;
+    }
+    .input-group input:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(251,191,36,0.12);
+    }
+    .input-group .toggle-pass {
+      position: absolute; right: 14px; top: 38px;
+      background: none; border: none;
+      color: var(--muted); cursor: pointer; font-size: 0.9rem;
+      transition: color var(--transition);
+    }
+    .input-group .toggle-pass:hover { color: var(--text); }
+    .modal-error {
+      display: none;
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.8rem; color: var(--red);
+      margin-bottom: 16px; text-align: center;
+    }
+    .modal-error.show { display: block; }
+    .btn-modal {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, var(--amber), #f59e0b);
+      color: #060b14;
+      border: none; border-radius: 10px;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.06em;
+      transition: all var(--transition);
+    }
+    .btn-modal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(251,191,36,0.4);
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; color: var(--muted);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .modal-close:hover { background: rgba(248,113,113,0.15); color: var(--red); }
+
+    /* Admin mode banner */
+    .admin-banner {
+      position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+      background: linear-gradient(90deg, rgba(251,191,36,0.12), rgba(251,191,36,0.06));
+      border-bottom: 1px solid rgba(251,191,36,0.25);
+      padding: 8px 24px;
+      display: none;
+      align-items: center; justify-content: space-between;
+      font-size: 0.78rem;
+    }
+    body.admin-mode .admin-banner { display: flex; }
+    .admin-banner-text {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--amber); font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.08em;
+    }
+    .admin-logout {
+      background: rgba(248,113,113,0.12);
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 0.72rem; color: var(--red); cursor: pointer;
+      transition: all var(--transition);
+      font-weight: 600;
+    }
+    .admin-logout:hover { background: rgba(248,113,113,0.22); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .stats-inner { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .journals-grid { grid-template-columns: 1fr; }
+      .contact-inner { flex-direction: column; }
+      .hero { padding: 70px 1rem 40px; }
+      .section { padding: 50px 1rem; }
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.15s; }
+    .fade-up:nth-child(4) { transition-delay: 0.2s; }
+    .fade-up:nth-child(5) { transition-delay: 0.25s; }
+    .fade-up:nth-child(6) { transition-delay: 0.3s; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 100px; right: 32px; z-index: 400;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 0.82rem; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateX(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(0); }
+    .toast i { color: var(--green); }
+  </style>
+</head>
+<body>
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Admin Banner -->
+<div class="admin-banner">
+  <div class="admin-banner-text">
+    <i class="fa-solid fa-pen-to-square"></i>
+    ADMIN MODE ACTIVE — Click the <i class="fa-solid fa-pencil" style="margin:0 4px"></i> icon on any card to edit its content
+  </div>
+  <button class="admin-logout" onclick="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i> Logout
+  </button>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon"><img src="logo.png" alt="Handwriters Publication Logo"/></div>
+      <div class="logo-text">
+        <span class="logo-name">Handwriters<span style="color:var(--cyan)">.</span></span>
+        <span class="logo-sub">Publication Services</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#journals">Journals</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="mailto:submissionwrittingservices@outlook.com">Submit</a></li>
+    </ul>
+    <div class="badge-live"><span class="dot"></span> Accepting Papers</div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-tag">
+    <i class="fa-solid fa-rocket" style="font-size:0.8rem"></i>
+    <span id="cfp-hero"></span> — Call For Papers Now Open
+  </div>
+  <h1>Scopus-Indexed Journal<br/>Publication Services</h1>
+  <p>Fast-track, peer-reviewed, globally indexed publications across Engineering, Science, Medicine, Business, and more. From submission to publication — we make it seamless.</p>
+  <div class="hero-cta">
+    <a href="mailto:submissionwrittingservices@outlook.com" class="btn btn-primary">
+      <i class="fa-solid fa-paper-plane"></i> Submit Your Paper
+    </a>
+    <a href="#journals" class="btn btn-outline">
+      <i class="fa-solid fa-book-open"></i> Browse Journals
+    </a>
+  </div>
+</div>
+
+<!-- Stats Strip -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-icon green"><i class="fa-solid fa-bolt"></i></div>
+      <div>
+        <div class="stat-label">Publication Timeline</div>
+        <div class="stat-value">Fast Track <span>Available</span></div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon cyan"><i class="fa-solid fa-file-circle-check"></i></div>
+      <div>
+        <div class="stat-label">Quality Report</div>
+        <div class="stat-value">Within <span>24 Hours</span></div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon purple"><i class="fa-solid fa-clipboard-check"></i></div>
+      <div>
+        <div class="stat-label">Acceptance Decision</div>
+        <div class="stat-value"><span>5–7</span> Days</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon amber"><i class="fa-solid fa-calendar-check"></i></div>
+      <div>
+        <div class="stat-label">Final Publication</div>
+        <div class="stat-value"><span>10–15</span> Days</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Journals Section -->
+<div class="section" id="journals">
+  <div class="section-header">
+    <div class="section-label">Scopus Indexed Journals</div>
+    <div class="section-title">Available <em>Journals</em></div>
+  </div>
+  <div class="journals-grid" id="journalsGrid"></div>
+</div>
+
+<!-- Contact Strip -->
+<div class="contact-strip" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h3 style="font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px">Get In Touch</h3>
+      <div class="contact-item email">
+        <div><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px">Email</div>
+          <a href="mailto:submissionwrittingservices@outlook.com">submissionwrittingservices@outlook.com</a>
+        </div>
+      </div>
+      <div class="contact-item web">
+        <div><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px">Website</div>
+          <a href="https://www.handwriterspublication.com" target="_blank">www.handwriterspublication.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="cfp-badge">
+      <div class="cfp-title"><i class="fa-solid fa-bullhorn"></i> &nbsp;Call For Papers</div>
+      <div class="cfp-text"><span id="cfp-strip"></span> Deadline</div>
+      <div style="margin-top:10px">
+        <a href="mailto:submissionwrittingservices@outlook.com" class="btn btn-primary" style="font-size:0.8rem;padding:9px 20px">
+          Submit Now <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>© <span id="year"></span> <span>Handwriters Publication</span> — All Rights Reserved &nbsp;|&nbsp; Powered by Scopus-Indexed Excellence</p>
+</footer>
+
+<!-- Admin FAB -->
+<div class="admin-fab" id="adminFab" onclick="toggleAdminModal()" title="Admin Panel">
+  <i class="fa-solid fa-lock" id="adminFabIcon"></i>
+  <div class="admin-fab-tooltip" id="adminTooltip">Admin Login</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Saved!</span></div>
+
+<!-- Admin Login Modal -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-icon"><i class="fa-solid fa-shield-halved"></i></div>
+    <h2>Admin Access</h2>
+    <p>Enter the admin password to enable edit mode</p>
+    <div class="input-group">
+      <label><i class="fa-solid fa-key" style="margin-right:6px"></i>Password</label>
+      <input type="password" id="adminPass" placeholder="••••••" onkeydown="if(event.key==='Enter')tryLogin()"/>
+      <button class="toggle-pass" onclick="togglePass()"><i class="fa-solid fa-eye" id="eyeIcon"></i></button>
+    </div>
+    <div class="modal-error" id="loginError">
+      <i class="fa-solid fa-triangle-exclamation"></i> Incorrect password. Please try again.
+    </div>
+    <button class="btn-modal" onclick="tryLogin()">
+      <i class="fa-solid fa-right-to-bracket"></i> &nbsp;Login
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── JOURNAL DATA ──
+  const defaultJournals = [
+    {
+      id: 1,
+      name: "International Journal of Advances in Signal and Image Sciences",
+      issn: "ISSN: 2457-0370",
+      q: "Q1",
+      subject: "Electronic Engineering, Computer Science, Biomedical Engineering, Management, Economics and more",
+      website: "https://xlescience.org/index.php/IJASIS/FocusandScope",
+      scopus: "https://www.scopus.com/sourceid/21101274775#tabs=2"
+    },
+    {
+      id: 2,
+      name: "Architectural Image Studies",
+      issn: "ISSN: 2184-8645",
+      q: null,
+      subject: "Engineering, Architecture, Management and more",
+      website: "https://journals.ap2.pt/index.php/ais",
+      scopus: "https://www.scopus.com/sourceid/21101247624"
+    },
+    {
+      id: 3,
+      name: "MSW Management",
+      issn: "ISSN: 1053-7899",
+      q: null,
+      subject: "Multidisciplinary, Scientific Work and Management Journal",
+      website: "https://mswmanagementj.com/index.php/home/about",
+      scopus: "https://www.scopus.com/sourceid/5300152536#tabs=0"
+    },
+    {
+      id: 4,
+      name: "Advances in Consumer Research",
+      issn: "ISSN: 0098-9258",
+      q: null,
+      subject: "Applied Psychology, Marketing, Economics, Consumer Behaviour, Management, Education Management, Business and more",
+      website: "https://acr-journal.com",
+      scopus: "https://www.scopus.com/sourceid/11600153426#tabs=2"
+    },
+    {
+      id: 5,
+      name: "European Journal of Clinical Pharmacy",
+      issn: "ISSN: 2385-409X",
+      q: null,
+      subject: "Pharmacy, Dentistry, Medicine, Medical and more",
+      website: "https://farmclin.com",
+      scopus: "https://www.scopus.com/sourceid/21100466202#tabs=0"
+    },
+    {
+      id: 6,
+      name: "International Journal of Drug Delivery Technology (IJDDT)",
+      issn: "ISSN: 0975-4415",
+      q: null,
+      subject: "Pharmacology, Toxicology and Pharmaceutics, Pharmaceutical Science, Dentistry and more",
+      website: "https://ijddt.com/",
+      scopus: "https://www.scopus.com/sourceid/20500195212"
+    }
+  ];
+
+  // Load from localStorage or use defaults
+  let journals = JSON.parse(localStorage.getItem('hp_journals') || 'null') || defaultJournals;
+  let isAdmin = false;
+  let editingId = null;
+
+  function saveJournals() {
+    localStorage.setItem('hp_journals', JSON.stringify(journals));
+  }
+
+  // ── RENDER JOURNALS ──
+  function renderJournals() {
+    const grid = document.getElementById('journalsGrid');
+    grid.innerHTML = '';
+    journals.forEach((j, idx) => {
+      const card = document.createElement('div');
+      card.className = 'journal-card fade-up';
+      card.id = `card-${j.id}`;
+      card.innerHTML = `
+        <button class="admin-edit-btn" onclick="startEdit(${j.id})" title="Edit this card">
+          <i class="fa-solid fa-pencil"></i>
+        </button>
+        <div class="card-header">
+          ${j.q ? `<div class="card-q-badge"><i class="fa-solid fa-star" style="font-size:0.6rem"></i> &nbsp;${j.q} Indexed</div>` : ''}
+          <div class="card-name" data-field="name">${j.name}</div>
+          <div class="card-issn" data-field="issn">${j.issn}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-subject">
+            <i class="fa-solid fa-tags"></i>
+            <span data-field="subject">${j.subject}</span>
+          </div>
+        </div>
+        <div class="edit-controls" id="edit-controls-${j.id}">
+          <button class="btn-save" onclick="saveEdit(${j.id})"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+          <button class="btn-cancel" onclick="cancelEdit(${j.id})"><i class="fa-solid fa-xmark"></i> Cancel</button>
+        </div>
+        <div class="card-footer">
+          <a href="${j.website}" target="_blank" class="card-link website" data-field="website">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Journal Website
+          </a>
+          <a href="${j.scopus}" target="_blank" class="card-link scopus" data-field="scopus">
+            <i class="fa-solid fa-database"></i> Scopus
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    observeFadeUp();
+  }
+
+  // ── ADMIN EDIT ──
+  function startEdit(id) {
+    if (editingId !== null) cancelEdit(editingId);
+    editingId = id;
+    const j = journals.find(x => x.id === id);
+    const card = document.getElementById(`card-${id}`);
+    card.classList.add('edit-active');
+
+    // Make name editable
+    const nameEl = card.querySelector('[data-field="name"]');
+    nameEl.innerHTML = `<input class="editable" type="text" value="${j.name.replace(/"/g,'&quot;')}" data-save="name"/>`;
+
+    // Make issn editable
+    const issnEl = card.querySelector('[data-field="issn"]');
+    issnEl.innerHTML = `<input class="editable" type="text" value="${j.issn.replace(/"/g,'&quot;')}" data-save="issn"/>`;
+
+    // Make subject editable
+    const subjectEl = card.querySelector('[data-field="subject"]');
+    subjectEl.innerHTML = `<textarea class="editable" rows="3" data-save="subject">${j.subject}</textarea>`;
+
+    // Make links editable
+    const websiteEl = card.querySelector('[data-field="website"]');
+    websiteEl.innerHTML = `<i class="fa-solid fa-arrow-up-right-from-square"></i> <input class="editable" type="url" value="${j.website}" data-save="website" style="width:140px;font-size:0.72rem"/>`;
+
+    const scopusEl = card.querySelector('[data-field="scopus"]');
+    scopusEl.innerHTML = `<i class="fa-solid fa-database"></i> <input class="editable" type="url" value="${j.scopus}" data-save="scopus" style="width:120px;font-size:0.72rem"/>`;
+  }
+
+  function saveEdit(id) {
+    const card = document.getElementById(`card-${id}`);
+    const inputs = card.querySelectorAll('[data-save]');
+    const j = journals.find(x => x.id === id);
+    inputs.forEach(inp => { j[inp.dataset.save] = inp.value.trim(); });
+    saveJournals();
+    editingId = null;
+    renderJournals();
+    showToast('Changes saved successfully!');
+  }
+
+  function cancelEdit(id) {
+    editingId = null;
+    renderJournals();
+  }
+
+  // ── AUTH ──
+  function toggleAdminModal() {
+    if (isAdmin) { logout(); return; }
+    document.getElementById('adminModal').classList.add('show');
+    document.getElementById('adminPass').value = '';
+    document.getElementById('loginError').classList.remove('show');
+    setTimeout(() => document.getElementById('adminPass').focus(), 300);
+  }
+  function closeModal() { document.getElementById('adminModal').classList.remove('show'); }
+  function tryLogin() {
+    const pass = document.getElementById('adminPass').value;
+    if (pass === 'chotu') {
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminFabIcon').className = 'fa-solid fa-lock-open';
+      document.getElementById('adminTooltip').textContent = 'Exit Admin';
+      closeModal();
+      showToast('Admin mode activated — click ✏ on any card to edit');
+    } else {
+      document.getElementById('loginError').classList.add('show');
+      document.getElementById('adminPass').value = '';
+      document.getElementById('adminPass').focus();
+      document.getElementById('adminPass').style.borderColor = 'var(--red)';
+      setTimeout(() => document.getElementById('adminPass').style.borderColor = '', 1500);
+    }
+  }
+  function logout() {
+    isAdmin = false;
+    if (editingId !== null) cancelEdit(editingId);
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminFabIcon').className = 'fa-solid fa-lock';
+    document.getElementById('adminTooltip').textContent = 'Admin Login';
+    showToast('Logged out of admin mode');
+  }
+  function togglePass() {
+    const inp = document.getElementById('adminPass');
+    const icon = document.getElementById('eyeIcon');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    icon.className = inp.type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // Click outside modal to close
+  document.getElementById('adminModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ── PARTICLES ──
+  function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.width = p.style.height = (Math.random() * 2 + 1) + 'px';
+      p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+      p.style.animationDelay = (Math.random() * 15) + 's';
+      p.style.opacity = Math.random() * 0.5;
+      if (Math.random() > 0.5) p.style.background = 'var(--cyan)';
+      container.appendChild(p);
+    }
+  }
+
+  // ── SCROLL FADE ──
+  function observeFadeUp() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+  }
+
+  // ── INIT ──
+  const _now = new Date();
+  const _monthName = _now.toLocaleString('en-US', { month: 'long' });
+  const _year = _now.getFullYear();
+  const _cfpLabel = `${_monthName} ${_year}`;
+  document.getElementById('year').textContent = _year;
+  document.getElementById('cfp-hero').textContent = _cfpLabel;
+  document.getElementById('cfp-strip').textContent = _cfpLabel;
+  createParticles();
+  renderJournals();
+</script>
+</body>
+</html>

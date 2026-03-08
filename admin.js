@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  /* ─────────────────────────── DEFAULT DATA ─────────────────────────── */
+  /* ─────────────────────────── DEFAULT DATA (emergency fallback) ─────────────────────────── */
   const DEFAULT_JOURNALS = [
     {
       id: 1, num: '01', badge: '★ Q1 Ranked',
@@ -54,24 +54,107 @@
   ];
 
   const ADMIN_PASSWORD = 'chotu';
-  const STORAGE_KEY    = 'hwp_journals';
+  const GH_CONFIG_KEY  = 'hwp_gh_config';
 
   /* ─────────────────────────── STATE ─────────────────────────── */
-  let isAdmin    = false;
-  let editingId  = null; // null = "add new" mode
+  let isAdmin       = false;
+  let editingId     = null; // null = "add new" mode
+  let journalsCache = null; // in-memory cache
 
-  /* ─────────────────────────── STORAGE ─────────────────────────── */
-  function loadJournals() {
+  /* ─────────────────────────── GITHUB CONFIG ─────────────────────────── */
+  function getGHConfig() {
+    try { return JSON.parse(localStorage.getItem(GH_CONFIG_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+
+  function setGHConfig(cfg) {
+    localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
+  }
+
+  function isGHConfigured() {
+    const c = getGHConfig();
+    return !!(c.token && c.owner && c.repo);
+  }
+
+  /* ─────────────────────────── DATA LOAD ─────────────────────────── */
+  async function getJournals() {
+    if (journalsCache) return JSON.parse(JSON.stringify(journalsCache));
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_JOURNALS));
+      const res = await fetch('journals.json?v=' + Date.now());
+      if (res.ok) {
+        journalsCache = await res.json();
+        return JSON.parse(JSON.stringify(journalsCache));
+      }
+    } catch (e) { /* network error – fall through to default */ }
+    journalsCache = JSON.parse(JSON.stringify(DEFAULT_JOURNALS));
+    return JSON.parse(JSON.stringify(journalsCache));
+  }
+
+  /* ─────────────────────────── DATA SAVE (GitHub REST API) ─────────────────────────── */
+  async function saveJournals(data) {
+    journalsCache = JSON.parse(JSON.stringify(data)); // update in-memory cache immediately
+
+    const cfg = getGHConfig();
+    if (!cfg.token || !cfg.owner || !cfg.repo) {
+      showSaveStatus('warning',
+        '⚠ GitHub not configured — edit is only visible on THIS browser. Open Admin Panel → GitHub Setup.');
+      return;
+    }
+
+    const filePath = (cfg.path || 'journals.json').replace(/^\//, '');
+    const branch   = cfg.branch || 'main';
+    const apiBase  = 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + filePath;
+    const headers  = {
+      'Authorization': 'token ' + cfg.token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    };
+
+    showSaveStatus('saving', '⏳ Saving to GitHub…');
+
+    try {
+      // 1. Get current file SHA (required by GitHub API for updates)
+      const getRes = await fetch(apiBase + '?ref=' + branch, { headers: headers });
+      if (!getRes.ok) {
+        const err = await getRes.json();
+        throw new Error('Cannot read file from GitHub: ' + (err.message || getRes.status));
+      }
+      const fileInfo   = await getRes.json();
+      const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+      // 2. Commit the updated file
+      const putRes = await fetch(apiBase, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({
+          message: 'chore: update journals.json via admin panel',
+          content: newContent,
+          sha: fileInfo.sha,
+          branch: branch
+        })
+      });
+
+      if (!putRes.ok) {
+        const err = await putRes.json();
+        throw new Error(err.message || 'GitHub API returned ' + putRes.status);
+      }
+
+      showSaveStatus('ok', '✓ Saved to GitHub! Changes will be live on all devices in ~1 min.');
     } catch (e) {
-      return JSON.parse(JSON.stringify(DEFAULT_JOURNALS));
+      showSaveStatus('error', '✗ GitHub save failed: ' + e.message);
     }
   }
 
-  function saveJournals(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  /* ─────────────────────────── STATUS BAR ─────────────────────────── */
+  function showSaveStatus(type, msg) {
+    const el = document.getElementById('ghSaveStatus');
+    if (!el) return;
+    el.textContent   = msg;
+    el.className     = 'gh-save-status gh-save-status--' + type;
+    el.style.display = 'block';
+    if (type === 'ok') {
+      setTimeout(function () { el.style.display = 'none'; }, 6000);
+    }
   }
 
   /* ─────────────────────────── RENDER CARDS ─────────────────────────── */
@@ -83,12 +166,12 @@
       .replace(/"/g, '&quot;');
   }
 
-  function renderCards() {
+  async function renderCards() {
     const grid   = document.getElementById('journalsGrid');
     const addBtn = document.getElementById('adminAddBtn');
     if (!grid) return;
 
-    const journals = loadJournals();
+    const journals = await getJournals();
 
     grid.innerHTML = journals.map(function (j, idx) {
       const delay = (idx * 0.07).toFixed(2) + 's';
@@ -143,11 +226,11 @@
     if (addBtn) addBtn.style.display = isAdmin ? 'inline-flex' : 'none';
   }
 
-  function deleteCard(id) {
+  async function deleteCard(id) {
     if (!confirm('Delete this journal card? This cannot be undone.')) return;
-    const journals = loadJournals().filter(function (j) { return j.id !== id; });
-    saveJournals(journals);
-    renderCards();
+    const journals = (await getJournals()).filter(function (j) { return j.id !== id; });
+    await saveJournals(journals);
+    await renderCards();
   }
 
   /* ─────────────────────────── ADMIN PANEL ─────────────────────────── */
@@ -166,6 +249,7 @@
     if (isAdmin) {
       adminLoginBody.style.display    = 'none';
       adminLoggedInBody.style.display = 'block';
+      refreshGHConfigUI();
     } else {
       adminLoginBody.style.display    = 'block';
       adminLoggedInBody.style.display = 'none';
@@ -197,6 +281,7 @@
       adminLoginBody.style.display    = 'none';
       adminLoggedInBody.style.display = 'block';
       adminTrigger.classList.add('admin-active');
+      refreshGHConfigUI();
       renderCards();
     } else {
       adminError.textContent   = 'Incorrect password. Try again.';
@@ -214,6 +299,43 @@
     renderCards();
   });
 
+  /* ─────────────────────────── GITHUB SETUP UI ─────────────────────────── */
+  function refreshGHConfigUI() {
+    const cfg      = getGHConfig();
+    const ownerEl  = document.getElementById('ghOwner');
+    const repoEl   = document.getElementById('ghRepo');
+    const branchEl = document.getElementById('ghBranch');
+    const pathEl   = document.getElementById('ghPath');
+    const tokenEl  = document.getElementById('ghToken');
+    const statusEl = document.getElementById('ghConfigStatus');
+    if (ownerEl)  ownerEl.value  = cfg.owner  || '';
+    if (repoEl)   repoEl.value   = cfg.repo   || '';
+    if (branchEl) branchEl.value = cfg.branch || 'main';
+    if (pathEl)   pathEl.value   = cfg.path   || 'journals.json';
+    if (tokenEl)  tokenEl.value  = cfg.token  || '';
+    if (statusEl) {
+      if (isGHConfigured()) {
+        statusEl.textContent = '✓ Connected to ' + cfg.owner + '/' + cfg.repo;
+        statusEl.className   = 'gh-config-status gh-config-status--ok';
+      } else {
+        statusEl.textContent = '✗ Not configured — edits visible on this browser only';
+        statusEl.className   = 'gh-config-status gh-config-status--warn';
+      }
+    }
+  }
+
+  document.getElementById('ghSaveConfig').addEventListener('click', function () {
+    const cfg = {
+      owner:  document.getElementById('ghOwner').value.trim(),
+      repo:   document.getElementById('ghRepo').value.trim(),
+      branch: document.getElementById('ghBranch').value.trim() || 'main',
+      path:   document.getElementById('ghPath').value.trim()   || 'journals.json',
+      token:  document.getElementById('ghToken').value.trim()
+    };
+    setGHConfig(cfg);
+    refreshGHConfigUI();
+  });
+
   /* ─────────────────────────── MODAL ─────────────────────────── */
   const adminModal        = document.getElementById('adminModal');
   const adminModalOverlay = document.getElementById('adminModalOverlay');
@@ -229,9 +351,9 @@
   const mVisitUrl  = document.getElementById('mVisitUrl');
   const mScopusUrl = document.getElementById('mScopusUrl');
 
-  function openEditModal(id) {
+  async function openEditModal(id) {
     editingId = id;
-    const journals = loadJournals();
+    const journals = await getJournals();
     const j = journals.find(function (x) { return x.id === id; });
     if (!j) return;
     modalTitle.textContent = 'Edit Journal';
@@ -275,7 +397,7 @@
     }
   });
 
-  modalSave.addEventListener('click', function () {
+  modalSave.addEventListener('click', async function () {
     const titleVal = mTitle.value.trim();
     const issnVal  = mIssn.value.trim();
     if (!titleVal || !issnVal) {
@@ -283,7 +405,7 @@
       return;
     }
 
-    const journals  = loadJournals();
+    const journals  = await getJournals();
     const tagsArray = mTags.value.split(',').map(function (t) { return t.trim(); }).filter(Boolean);
 
     if (editingId !== null) {
@@ -315,9 +437,9 @@
       });
     }
 
-    saveJournals(journals);
     closeModal();
-    renderCards();
+    await saveJournals(journals);
+    await renderCards();
   });
 
   /* ─────────────────────────── INIT ─────────────────────────── */

@@ -197,6 +197,40 @@
         </div>
         <p class="admin-welcome">Welcome, Admin!</p>
         <p class="admin-hint">Hover over any card to see <strong>Edit</strong> &amp; <strong>Delete</strong> controls.<br>Use the <strong>Add Journal</strong> button below the grid to add new tiles.</p>
+
+        <!-- ── GitHub Setup ── -->
+        <details class="gh-setup">
+            <summary class="gh-setup__toggle">⚙ GitHub Setup <span class="gh-setup__sub">(required for changes to go live)</span></summary>
+            <div class="gh-setup__body">
+                <p class="gh-setup__info">Enter your GitHub repo details so edits are committed directly to the repo and visible on every device. Your token is stored only in this browser, never in the code.</p>
+                <p id="ghConfigStatus" class="gh-config-status gh-config-status--warn">✗ Not configured</p>
+                <div class="aform-group">
+                    <label class="aform-label">GitHub Username / Org</label>
+                    <input type="text" id="ghOwner" class="aform-input" placeholder="e.g. satyam">
+                </div>
+                <div class="aform-group">
+                    <label class="aform-label">Repository Name</label>
+                    <input type="text" id="ghRepo" class="aform-input" placeholder="e.g. journals">
+                </div>
+                <div class="aform-row aform-row--half">
+                    <div class="aform-group">
+                        <label class="aform-label">Branch</label>
+                        <input type="text" id="ghBranch" class="aform-input" placeholder="main">
+                    </div>
+                    <div class="aform-group">
+                        <label class="aform-label">File path</label>
+                        <input type="text" id="ghPath" class="aform-input" placeholder="journals.json">
+                    </div>
+                </div>
+                <div class="aform-group">
+                    <label class="aform-label">Personal Access Token <span class="aform-hint">(needs <code>contents:write</code>)</span></label>
+                    <input type="password" id="ghToken" class="aform-input" placeholder="ghp_…" autocomplete="off">
+                </div>
+                <button class="admin-submit-btn" id="ghSaveConfig" style="margin-top:4px">Save Config</button>
+                <p class="gh-setup__tip">How to get a token: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → Repository: Contents (Read &amp; Write).</p>
+            </div>
+        </details>
+
         <button class="admin-logout-btn" id="adminLogout">Logout</button>
     </div>
 </div>
@@ -247,6 +281,9 @@
         </div>
     </div>
 </div>
+
+<!-- ========== GITHUB SAVE STATUS BAR ========== -->
+<div id="ghSaveStatus" class="gh-save-status" style="display:none"></div>
 
 <script src="admin.js"></script>
 </body>

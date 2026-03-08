@@ -324,17 +324,26 @@
     }
   }
 
-  document.getElementById('ghSaveConfig').addEventListener('click', function () {
-    const cfg = {
-      owner:  document.getElementById('ghOwner').value.trim(),
-      repo:   document.getElementById('ghRepo').value.trim(),
-      branch: document.getElementById('ghBranch').value.trim() || 'main',
-      path:   document.getElementById('ghPath').value.trim()   || 'journals.json',
-      token:  document.getElementById('ghToken').value.trim()
-    };
-    setGHConfig(cfg);
-    refreshGHConfigUI();
-  });
+  var ghSaveConfigBtn = document.getElementById('ghSaveConfig');
+  if (ghSaveConfigBtn) {
+    ghSaveConfigBtn.addEventListener('click', function () {
+      const cfg = {
+        owner:  document.getElementById('ghOwner').value.trim(),
+        repo:   document.getElementById('ghRepo').value.trim(),
+        branch: document.getElementById('ghBranch').value.trim() || 'main',
+        path:   document.getElementById('ghPath').value.trim()   || 'journals.json',
+        token:  document.getElementById('ghToken').value.trim()
+      };
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        alert('Please fill in Username, Repository, and Token fields.');
+        return;
+      }
+      setGHConfig(cfg);
+      refreshGHConfigUI();
+      ghSaveConfigBtn.textContent = '✓ Saved!';
+      setTimeout(function () { ghSaveConfigBtn.textContent = 'Save Config'; }, 2000);
+    });
+  }
 
   /* ─────────────────────────── MODAL ─────────────────────────── */
   const adminModal        = document.getElementById('adminModal');

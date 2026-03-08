@@ -1,7 +1,17 @@
 (function () {
   'use strict';
 
-  /* ─────────────────────────── DEFAULT DATA (emergency fallback) ─────────────────────────── */
+  /* ─── GITHUB REPO CONFIG (hardcoded — only token is entered by admin) ─── */
+  var GH_OWNER  = 'ryoikitenkaai';
+  var GH_REPO   = 'Journal';
+  var GH_BRANCH = 'main';
+  var GH_PATH   = 'journals.json';
+  var GH_TOKEN_KEY = 'hwp_gh_token';
+
+  function getToken()  { return localStorage.getItem(GH_TOKEN_KEY) || ''; }
+  function saveToken(t){ localStorage.setItem(GH_TOKEN_KEY, t); }
+
+  /* ─────────────────────────── DEFAULT DATA ─────────────────────────── */
   const DEFAULT_JOURNALS = [
     {
       id: 1, num: '01', badge: '★ Q1 Ranked',
@@ -54,107 +64,70 @@
   ];
 
   const ADMIN_PASSWORD = 'chotu';
-  const GH_CONFIG_KEY  = 'hwp_gh_config';
 
   /* ─────────────────────────── STATE ─────────────────────────── */
   let isAdmin       = false;
-  let editingId     = null; // null = "add new" mode
-  let journalsCache = null; // in-memory cache
+  let editingId     = null;
+  let journalsCache = null;
 
-  /* ─────────────────────────── GITHUB CONFIG ─────────────────────────── */
-  function getGHConfig() {
-    try { return JSON.parse(localStorage.getItem(GH_CONFIG_KEY)) || {}; }
-    catch (e) { return {}; }
-  }
-
-  function setGHConfig(cfg) {
-    localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(cfg));
-  }
-
-  function isGHConfigured() {
-    const c = getGHConfig();
-    return !!(c.token && c.owner && c.repo);
-  }
-
-  /* ─────────────────────────── DATA LOAD ─────────────────────────── */
-  async function getJournals() {
+  /* ─────────────────────────── LOAD from journals.json ─────────────────────────── */
+  async function loadJournals() {
     if (journalsCache) return JSON.parse(JSON.stringify(journalsCache));
     try {
-      const res = await fetch('journals.json?v=' + Date.now());
+      var res = await fetch('journals.json?t=' + Date.now());
       if (res.ok) {
         journalsCache = await res.json();
         return JSON.parse(JSON.stringify(journalsCache));
       }
-    } catch (e) { /* network error – fall through to default */ }
+    } catch(e) {}
     journalsCache = JSON.parse(JSON.stringify(DEFAULT_JOURNALS));
     return JSON.parse(JSON.stringify(journalsCache));
   }
 
-  /* ─────────────────────────── DATA SAVE (GitHub REST API) ─────────────────────────── */
+  /* ─────────────────────────── SAVE to GitHub ─────────────────────────── */
   async function saveJournals(data) {
-    journalsCache = JSON.parse(JSON.stringify(data)); // update in-memory cache immediately
-
-    const cfg = getGHConfig();
-    if (!cfg.token || !cfg.owner || !cfg.repo) {
-      showSaveStatus('warning',
-        '⚠ GitHub not configured — edit is only visible on THIS browser. Open Admin Panel → GitHub Setup.');
+    journalsCache = JSON.parse(JSON.stringify(data));
+    var token = getToken();
+    if (!token) {
+      showToast('warning', '⚠ No token set — open Admin Panel and enter your GitHub token.');
       return;
     }
-
-    const filePath = (cfg.path || 'journals.json').replace(/^\//, '');
-    const branch   = cfg.branch || 'main';
-    const apiBase  = 'https://api.github.com/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + filePath;
-    const headers  = {
-      'Authorization': 'token ' + cfg.token,
+    var apiUrl = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_PATH;
+    var headers = {
+      'Authorization': 'token ' + token,
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
     };
-
-    showSaveStatus('saving', '⏳ Saving to GitHub…');
-
+    showToast('saving', '⏳ Saving to GitHub…');
     try {
-      // 1. Get current file SHA (required by GitHub API for updates)
-      const getRes = await fetch(apiBase + '?ref=' + branch, { headers: headers });
-      if (!getRes.ok) {
-        const err = await getRes.json();
-        throw new Error('Cannot read file from GitHub: ' + (err.message || getRes.status));
-      }
-      const fileInfo   = await getRes.json();
-      const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-
-      // 2. Commit the updated file
-      const putRes = await fetch(apiBase, {
-        method: 'PUT',
-        headers: headers,
+      var getRes = await fetch(apiUrl + '?ref=' + GH_BRANCH, { headers: headers });
+      if (!getRes.ok) { var e1 = await getRes.json(); throw new Error(e1.message || getRes.status); }
+      var fileInfo = await getRes.json();
+      var content  = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      var putRes = await fetch(apiUrl, {
+        method: 'PUT', headers: headers,
         body: JSON.stringify({
-          message: 'chore: update journals.json via admin panel',
-          content: newContent,
+          message: 'update journals.json via admin',
+          content: content,
           sha: fileInfo.sha,
-          branch: branch
+          branch: GH_BRANCH
         })
       });
-
-      if (!putRes.ok) {
-        const err = await putRes.json();
-        throw new Error(err.message || 'GitHub API returned ' + putRes.status);
-      }
-
-      showSaveStatus('ok', '✓ Saved to GitHub! Changes will be live on all devices in ~1 min.');
-    } catch (e) {
-      showSaveStatus('error', '✗ GitHub save failed: ' + e.message);
+      if (!putRes.ok) { var e2 = await putRes.json(); throw new Error(e2.message || putRes.status); }
+      showToast('ok', '✓ Saved! All devices will see the change in ~1 minute.');
+    } catch(err) {
+      showToast('error', '✗ Save failed: ' + err.message);
     }
   }
 
-  /* ─────────────────────────── STATUS BAR ─────────────────────────── */
-  function showSaveStatus(type, msg) {
-    const el = document.getElementById('ghSaveStatus');
+  /* ─────────────────────────── TOAST ─────────────────────────── */
+  function showToast(type, msg) {
+    var el = document.getElementById('hwpToast');
     if (!el) return;
     el.textContent   = msg;
-    el.className     = 'gh-save-status gh-save-status--' + type;
+    el.className     = 'hwp-toast hwp-toast--' + type;
     el.style.display = 'block';
-    if (type === 'ok') {
-      setTimeout(function () { el.style.display = 'none'; }, 6000);
-    }
+    if (type === 'ok') setTimeout(function(){ el.style.display='none'; }, 5000);
   }
 
   /* ─────────────────────────── RENDER CARDS ─────────────────────────── */
@@ -171,7 +144,7 @@
     const addBtn = document.getElementById('adminAddBtn');
     if (!grid) return;
 
-    const journals = await getJournals();
+    const journals = await loadJournals();
 
     grid.innerHTML = journals.map(function (j, idx) {
       const delay = (idx * 0.07).toFixed(2) + 's';
@@ -228,7 +201,7 @@
 
   async function deleteCard(id) {
     if (!confirm('Delete this journal card? This cannot be undone.')) return;
-    const journals = (await getJournals()).filter(function (j) { return j.id !== id; });
+    const journals = (await loadJournals()).filter(function (j) { return j.id !== id; });
     await saveJournals(journals);
     await renderCards();
   }
@@ -249,7 +222,6 @@
     if (isAdmin) {
       adminLoginBody.style.display    = 'none';
       adminLoggedInBody.style.display = 'block';
-      refreshGHConfigUI();
     } else {
       adminLoginBody.style.display    = 'block';
       adminLoggedInBody.style.display = 'none';
@@ -281,7 +253,9 @@
       adminLoginBody.style.display    = 'none';
       adminLoggedInBody.style.display = 'block';
       adminTrigger.classList.add('admin-active');
-      refreshGHConfigUI();
+      /* populate token field if already saved */
+      var tf = document.getElementById('ghTokenInput');
+      if (tf) tf.value = getToken();
       renderCards();
     } else {
       adminError.textContent   = 'Incorrect password. Try again.';
@@ -298,52 +272,6 @@
     closeAdminPanel();
     renderCards();
   });
-
-  /* ─────────────────────────── GITHUB SETUP UI ─────────────────────────── */
-  function refreshGHConfigUI() {
-    const cfg      = getGHConfig();
-    const ownerEl  = document.getElementById('ghOwner');
-    const repoEl   = document.getElementById('ghRepo');
-    const branchEl = document.getElementById('ghBranch');
-    const pathEl   = document.getElementById('ghPath');
-    const tokenEl  = document.getElementById('ghToken');
-    const statusEl = document.getElementById('ghConfigStatus');
-    if (ownerEl)  ownerEl.value  = cfg.owner  || '';
-    if (repoEl)   repoEl.value   = cfg.repo   || '';
-    if (branchEl) branchEl.value = cfg.branch || 'main';
-    if (pathEl)   pathEl.value   = cfg.path   || 'journals.json';
-    if (tokenEl)  tokenEl.value  = cfg.token  || '';
-    if (statusEl) {
-      if (isGHConfigured()) {
-        statusEl.textContent = '✓ Connected to ' + cfg.owner + '/' + cfg.repo;
-        statusEl.className   = 'gh-config-status gh-config-status--ok';
-      } else {
-        statusEl.textContent = '✗ Not configured — edits visible on this browser only';
-        statusEl.className   = 'gh-config-status gh-config-status--warn';
-      }
-    }
-  }
-
-  var ghSaveConfigBtn = document.getElementById('ghSaveConfig');
-  if (ghSaveConfigBtn) {
-    ghSaveConfigBtn.addEventListener('click', function () {
-      const cfg = {
-        owner:  document.getElementById('ghOwner').value.trim(),
-        repo:   document.getElementById('ghRepo').value.trim(),
-        branch: document.getElementById('ghBranch').value.trim() || 'main',
-        path:   document.getElementById('ghPath').value.trim()   || 'journals.json',
-        token:  document.getElementById('ghToken').value.trim()
-      };
-      if (!cfg.owner || !cfg.repo || !cfg.token) {
-        alert('Please fill in Username, Repository, and Token fields.');
-        return;
-      }
-      setGHConfig(cfg);
-      refreshGHConfigUI();
-      ghSaveConfigBtn.textContent = '✓ Saved!';
-      setTimeout(function () { ghSaveConfigBtn.textContent = 'Save Config'; }, 2000);
-    });
-  }
 
   /* ─────────────────────────── MODAL ─────────────────────────── */
   const adminModal        = document.getElementById('adminModal');
@@ -362,7 +290,7 @@
 
   async function openEditModal(id) {
     editingId = id;
-    const journals = await getJournals();
+    const journals = await loadJournals();
     const j = journals.find(function (x) { return x.id === id; });
     if (!j) return;
     modalTitle.textContent = 'Edit Journal';
@@ -414,7 +342,7 @@
       return;
     }
 
-    const journals  = await getJournals();
+    const journals  = await loadJournals();
     const tagsArray = mTags.value.split(',').map(function (t) { return t.trim(); }).filter(Boolean);
 
     if (editingId !== null) {
@@ -449,6 +377,16 @@
     closeModal();
     await saveJournals(journals);
     await renderCards();
+  });
+
+  /* ─────────────────────────── TOKEN SAVE BUTTON ─────────────────────────── */
+  document.getElementById('ghTokenSave').addEventListener('click', function () {
+    var val = document.getElementById('ghTokenInput').value.trim();
+    if (!val) { alert('Please paste your GitHub token.'); return; }
+    saveToken(val);
+    this.textContent = '✓ Saved!';
+    var btn = this;
+    setTimeout(function(){ btn.textContent = 'Save Token'; }, 2000);
   });
 
   /* ─────────────────────────── INIT ─────────────────────────── */

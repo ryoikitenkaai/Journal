@@ -1305,88 +1305,71 @@ body {
     transform: translateY(-1px);
 }
 
-/* ============================================================
-   GITHUB SETUP & SAVE STATUS
-   ============================================================ */
+/* ── GitHub token box ── */
+.gh-token-box {
+    margin: 14px 0 10px;
+    padding: 14px;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius-sm);
+    background: rgba(201,168,76,0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.gh-token-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold);
+}
+.gh-token-hint {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+.gh-token-row {
+    display: flex;
+    gap: 8px;
+}
+.gh-token-row .aform-input {
+    flex: 1;
+    min-width: 0;
+}
+.gh-token-btn {
+    padding: 8px 14px;
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+.gh-token-btn:hover { background: var(--gold-light); }
+.gh-token-tip {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
 
-/* ── GitHub save status bar (bottom of page) ── */
-.gh-save-status {
+/* ── Toast notification ── */
+.hwp-toast {
     position: fixed;
-    bottom: 20px;
+    bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    padding: 10px 22px;
+    padding: 10px 24px;
     border-radius: 30px;
-    font-size: 0.84rem;
+    font-size: 0.83rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
     white-space: nowrap;
-    box-shadow: 0 6px 28px rgba(0,0,0,0.45);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.5);
     pointer-events: none;
 }
-.gh-save-status--ok      { background: #1a3d2a; color: #6ee7a0; border: 1px solid #2d6b47; }
-.gh-save-status--saving  { background: #1a2d3d; color: #93c5fd; border: 1px solid #2d5068; }
-.gh-save-status--warning { background: #3b2f10; color: #fcd34d; border: 1px solid #705820; }
-.gh-save-status--error   { background: #3b1010; color: #fca5a5; border: 1px solid #7f2020; pointer-events: auto; }
+.hwp-toast--ok      { background:#1a3d2a; color:#6ee7a0; border:1px solid #2d6b47; }
+.hwp-toast--saving  { background:#1a2d3d; color:#93c5fd; border:1px solid #2d5068; }
+.hwp-toast--warning { background:#3b2f10; color:#fcd34d; border:1px solid #705820; pointer-events:auto; }
+.hwp-toast--error   { background:#3b1010; color:#fca5a5; border:1px solid #7f2020; pointer-events:auto; }
 
-/* ── GitHub Setup section inside admin panel ── */
-.gh-setup {
-    margin: 14px 0 10px;
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-}
-.gh-setup__toggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 14px;
-    background: rgba(201,168,76,0.06);
-    color: var(--gold);
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    list-style: none;
-    user-select: none;
-}
-.gh-setup__toggle::-webkit-details-marker { display: none; }
-.gh-setup__toggle::before { content: '▶'; font-size: 0.65rem; transition: transform 0.2s; }
-details[open] .gh-setup__toggle::before { transform: rotate(90deg); }
-.gh-setup__sub { color: var(--text-muted); font-weight: 400; font-size: 0.75rem; }
-.gh-setup__body {
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.gh-setup__info {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-.gh-setup__tip {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    border-top: 1px solid var(--border-mid);
-    padding-top: 8px;
-    margin-top: 2px;
-}
-.gh-setup__tip code {
-    background: rgba(255,255,255,0.07);
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-size: 0.78rem;
-}
-
-/* ── GitHub config status badge ── */
-.gh-config-status {
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: var(--radius-sm);
-    text-align: center;
-}
-.gh-config-status--ok   { background: rgba(110,231,160,0.1); color: #6ee7a0; border: 1px solid rgba(110,231,160,0.25); }
-.gh-config-status--warn { background: rgba(252,211,77,0.08); color: #fcd34d; border: 1px solid rgba(252,211,77,0.22); }

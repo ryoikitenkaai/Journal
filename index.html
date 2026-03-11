@@ -7,167 +7,260 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ========== TOPBAR ========== -->
-<div class="topbar">
-    <p>Do you want your paper published? <a href="mailto:submissionwrittingservices@outlook.com">Consult our experts now!</a></p>
-</div>
-
-<!-- ========== NAV ========== -->
-<nav class="navbar">
-    <div class="container navbar__inner">
-        <div class="navbar__brand">
-            <img src="logo.png" alt="Handwriters Publication Logo" class="brand-logo">
-            <div class="brand-text">
-                <span class="brand-name">HANDWRITERS</span>
-                <span class="brand-sub">PUBLICATION</span>
-            </div>
-        </div>
-        <ul class="navbar__links">
-            <li><a href="#">Services</a></li>
-            <li><a href="#journals">Journals</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#footer" class="nav-cta">Contact</a></li>
-        </ul>
-        <button class="admin-trigger" id="adminTrigger" title="Admin Access" aria-label="Admin login">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </button>
+<!-- ========== ACCESS GATE ========== -->
+<div class="access-gate" id="accessGate">
+    <div class="gate-bg">
+        <div class="gate-blob gate-blob--1"></div>
+        <div class="gate-blob gate-blob--2"></div>
+        <div class="gate-blob gate-blob--3"></div>
     </div>
-</nav>
-
-<!-- ========== HERO ========== -->
-<header class="hero">
-    <div class="hero__overlay"></div>
-    <div class="hero__overlay2"></div>
-    <div class="container hero__inner">
-        <p class="hero__eyebrow">Scopus-Indexed Fast Track Publication</p>
-        <h1 class="hero__title">
-            Research Publication<br>
-            <em>Services</em>
-        </h1>
-        <p class="hero__desc">Accelerate Your Academic Journey with Trusted Publishing Support</p>
-        <div class="hero__ctas">
-            <a href="#journals" class="btn-gold">Explore Journals</a>
-            <a href="mailto:submissionwrittingservices@outlook.com" class="btn-outline">Contact Us</a>
-        </div>
-        <div class="hero__stats">
-            <div class="hstat">
-                <span class="hstat__value">24 hrs</span>
-                <span class="hstat__label">Quality Report</span>
-            </div>
-            <div class="hstat__sep"></div>
-            <div class="hstat">
-                <span class="hstat__value">5–7 days</span>
-                <span class="hstat__label">Acceptance</span>
-            </div>
-            <div class="hstat__sep"></div>
-            <div class="hstat">
-                <span class="hstat__value">10–15 days</span>
-                <span class="hstat__label">Publication</span>
-            </div>
-        </div>
+    <!-- Faded decorative shapes on gate -->
+    <div class="gate-faded-decor gate-faded--tl" aria-hidden="true">
+        <svg viewBox="0 0 200 200" fill="none"><circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="0.7"/><circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="0.5"/></svg>
     </div>
-</header>
-
-<!-- ========== JOURNALS ========== -->
-<main class="journals-section" id="journals">
-    <div class="container">
-        <div class="section-intro">
-            <p class="section-eyebrow">Call for Papers — February 2026</p>
-            <h2 class="section-heading">Available Journals</h2>
-            <div class="section-rule"><span></span></div>
-            <p class="section-desc">All journals listed below are Scopus-indexed. Submit your manuscript and get published through our fast-track process.</p>
+    <div class="gate-faded-decor gate-faded--br" aria-hidden="true">
+        <svg viewBox="0 0 160 160" fill="none"><rect x="20" y="20" width="120" height="120" rx="20" stroke="currentColor" stroke-width="0.6"/><rect x="45" y="45" width="70" height="70" rx="12" stroke="currentColor" stroke-width="0.4"/></svg>
+    </div>
+    <div class="gate-card">
+        <div class="gate-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+                <path d="M12 2C9.24 2 7 4.24 7 7v4H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2v-9a2 2 0 00-2-2h-2V7c0-2.76-2.24-5-5-5zm0 2c1.66 0 3 1.34 3 3v4H9V7c0-1.66 1.34-3 3-3zm0 12a2 2 0 110 4 2 2 0 010-4z"/>
+            </svg>
         </div>
-
-        <div class="journals-grid" id="journalsGrid">
-            <!-- Cards rendered dynamically by admin.js -->
-        </div>
-        <div class="admin-add-wrap">
-            <button class="admin-add-btn" id="adminAddBtn" style="display:none">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Add Journal
+        <h1 class="gate-card__title">Restricted Access</h1>
+        <p class="gate-card__desc">This page is exclusively available to authorized users. Please enter your access key to continue.</p>
+        <div class="gate-card__form">
+            <input type="text" id="accessKeyInput" class="gate-input" placeholder="Enter your access key" autocomplete="off" spellcheck="false">
+            <button class="gate-btn" id="accessKeySubmit">
+                <span>Unlock</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
         </div>
+        <p class="gate-error" id="gateError"></p>
+        <p class="gate-card__footer">Don't have an access key? <a href="https://wa.me/916205170397?text=I%20want%20access%20to%20the%20journals%20info%20website" target="_blank" rel="noopener">Request access</a></p>
     </div>
-</main>
+</div>
 
-<!-- ========== CTA BAND ========== -->
-<section class="cta-band">
-    <div class="container cta-band__inner">
-        <div>
-            <h3 class="cta-band__title">Ready to Publish Your Research?</h3>
-            <p class="cta-band__sub">Get a quality report within 24 hours. Fast, reliable, and Scopus-indexed.</p>
-        </div>
-        <a href="mailto:submissionwrittingservices@outlook.com" class="btn-gold">Submit Your Paper</a>
+<!-- ========== MAIN SITE (hidden until authenticated) ========== -->
+<div class="site-wrapper site-locked" id="siteWrapper" style="display:none !important">
+
+    <!-- Animated background blobs -->
+    <div class="bg-decoration">
+        <div class="bg-blob bg-blob--1"></div>
+        <div class="bg-blob bg-blob--2"></div>
+        <div class="bg-blob bg-blob--3"></div>
+        <div class="bg-blob bg-blob--4"></div>
     </div>
-</section>
 
-<!-- ========== FOOTER ========== -->
-<footer class="footer" id="footer">
-    <div class="container footer__inner">
-        <div class="footer__brand">
-            <div class="footer__logo-row">
-                <svg class="brand-icon brand-icon--lg" viewBox="0 0 40 40" fill="none">
-                    <path d="M8 30V12l12-4 12 4v18" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M14 30V20h12v10" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20 20v10" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
+    <!-- Faded decorative images -->
+    <div class="faded-decor faded-decor--quill" aria-hidden="true">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M95 10C85 25 70 50 55 70C45 82 35 90 25 95L30 100C40 95 55 85 70 65C80 52 90 35 100 15L95 10Z" fill="currentColor" opacity="0.5"/>
+            <path d="M25 95L10 110L15 115L30 100L25 95Z" fill="currentColor" opacity="0.4"/>
+            <path d="M55 70C60 65 65 58 70 50L60 55C58 60 56 65 55 70Z" fill="currentColor" opacity="0.3"/>
+        </svg>
+    </div>
+    <div class="faded-decor faded-decor--book" aria-hidden="true">
+        <svg viewBox="0 0 140 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M70 15C55 10 35 8 10 12V85C35 81 55 83 70 88C85 83 105 81 130 85V12C105 8 85 10 70 15Z" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <line x1="70" y1="15" x2="70" y2="88" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+            <path d="M25 25H55M25 35H50M25 45H52M25 55H48M25 65H53" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
+            <path d="M85 25H115M85 35H110M85 45H112M85 55H108M85 65H113" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
+        </svg>
+    </div>
+    <div class="faded-decor faded-decor--rings" aria-hidden="true">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+            <circle cx="100" cy="100" r="65" stroke="currentColor" stroke-width="0.6" opacity="0.3"/>
+            <circle cx="100" cy="100" r="40" stroke="currentColor" stroke-width="0.4" opacity="0.2"/>
+        </svg>
+    </div>
+
+    <!-- ========== NAV ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar__inner">
+            <div class="navbar__brand">
+                <img src="logo.png" alt="Handwriters Publication Logo" class="brand-logo">
                 <div class="brand-text">
                     <span class="brand-name">HANDWRITERS</span>
                     <span class="brand-sub">PUBLICATION</span>
                 </div>
             </div>
-            <p class="footer__tagline">Accelerating Knowledge.<br>Amplifying Academic Impact.</p>
-            <a href="https://www.handwriterspublication.com" target="_blank" class="footer__knowmore">
-                Know More About Us
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-        </div>
-
-        <div class="footer__col">
-            <p class="footer__col-title">Quick Links</p>
-            <ul class="footer__links">
-                <li><a href="#journals">Available Journals</a></li>
-                <li><a href="#">Our Services</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#footer">Contact</a></li>
+            <ul class="navbar__links">
+                <li><a href="#">Services</a></li>
+                <li><a href="#journals">Journals</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#footer" class="nav-cta">Contact</a></li>
             </ul>
+            <div class="navbar__right">
+                <button class="admin-trigger" id="adminTrigger" title="Admin Access" aria-label="Admin login">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
         </div>
+    </nav>
 
-        <div class="footer__col">
-            <p class="footer__col-title">Contact Us</p>
-            <div class="footer__contacts">
-                <a href="mailto:submissionwrittingservices@outlook.com" class="fcontact">
-                    <span class="fcontact__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                    </span>
-                    <span class="fcontact__body">
-                        <span class="fcontact__label">Email</span>
-                        <span class="fcontact__value">submissionwrittingservices<br>@outlook.com</span>
-                    </span>
-                </a>
-                <a href="https://www.handwriterspublication.com" target="_blank" class="fcontact">
-                    <span class="fcontact__icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-                    </span>
-                    <span class="fcontact__body">
-                        <span class="fcontact__label">Website</span>
-                        <span class="fcontact__value">handwriterspublication.com</span>
-                    </span>
+    <!-- ========== MOBILE MENU ========== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu__links">
+            <li><a href="#">Services</a></li>
+            <li><a href="#journals">Journals</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#footer">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <header class="hero">
+        <div class="hero__bg-image" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=80&auto=format" alt="" loading="eager" draggable="false">
+        </div>
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <div class="hero__eyebrow">
+                    <span class="hero__eyebrow-dot"></span>
+                    Scopus-Indexed Fast Track Publication
+                </div>
+                <h1 class="hero__title">
+                    Research Publication<br>
+                    <em>Services</em>
+                </h1>
+                <p class="hero__desc">Accelerate Your Academic Journey with Trusted Publishing Support. Get your work published in top Scopus-indexed journals.</p>
+                <div class="hero__ctas">
+                    <a href="#journals" class="btn-primary">
+                        Explore Journals
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="mailto:submissionwrittingservices@outlook.com" class="btn-ghost">Contact Us</a>
+                </div>
+            </div>
+            <div class="hero__stats-card">
+                <div class="hstat">
+                    <span class="hstat__value">24 hrs</span>
+                    <span class="hstat__label">Quality Report</span>
+                </div>
+                <div class="hstat__divider"></div>
+                <div class="hstat">
+                    <span class="hstat__value">5–7 days</span>
+                    <span class="hstat__label">Acceptance</span>
+                </div>
+                <div class="hstat__divider"></div>
+                <div class="hstat">
+                    <span class="hstat__value">10–15 days</span>
+                    <span class="hstat__label">Publication</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== JOURNALS ========== -->
+    <main class="journals-section" id="journals">
+        <div class="container">
+            <div class="section-intro">
+                <div class="section-eyebrow">
+                    <span class="section-eyebrow__dot"></span>
+                    Call for Papers — March 2026
+                </div>
+                <h2 class="section-heading">Available Journals</h2>
+                <p class="section-desc">All journals listed below are Scopus-indexed. Submit your manuscript and get published through our fast-track process.</p>
+            </div>
+
+            <div class="journals-grid" id="journalsGrid">
+                <!-- Cards rendered dynamically by admin.js -->
+            </div>
+            <div class="admin-add-wrap">
+                <button class="admin-add-btn" id="adminAddBtn" style="display:none">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Journal
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== CTA BAND ========== -->
+    <section class="cta-band">
+        <div class="container">
+            <div class="cta-card">
+                <div class="cta-card__content">
+                    <h3 class="cta-card__title">Ready to Publish Your Research?</h3>
+                    <p class="cta-card__sub">Get a quality report within 24 hours. Fast, reliable, and Scopus-indexed.</p>
+                </div>
+                <a href="mailto:submissionwrittingservices@outlook.com" class="btn-primary btn-primary--light">
+                    Submit Your Paper
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
         </div>
-    </div>
-    <div class="footer__bottom">
-        <div class="container footer__bottom-inner">
-            <p>© 2026 Handwriters Publication. All rights reserved.</p>
-            <p>Fast Track · Scopus Indexed · Peer Reviewed</p>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer" id="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <div class="footer__logo-row">
+                    <img src="logo.png" alt="Handwriters Publication Logo" class="brand-logo">
+                    <div class="brand-text">
+                        <span class="brand-name">HANDWRITERS</span>
+                        <span class="brand-sub">PUBLICATION</span>
+                    </div>
+                </div>
+                <p class="footer__tagline">Accelerating Knowledge.<br>Amplifying Academic Impact.</p>
+                <a href="https://www.handwriterspublication.com" target="_blank" class="footer__knowmore">
+                    Know More About Us
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <div class="footer__col">
+                <p class="footer__col-title">Quick Links</p>
+                <ul class="footer__links">
+                    <li><a href="#journals">Available Journals</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#footer">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__col">
+                <p class="footer__col-title">Contact Us</p>
+                <div class="footer__contacts">
+                    <a href="mailto:submissionwrittingservices@outlook.com" class="fcontact">
+                        <span class="fcontact__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                        <span class="fcontact__body">
+                            <span class="fcontact__label">Email</span>
+                            <span class="fcontact__value">submissionwrittingservices@outlook.com</span>
+                        </span>
+                    </a>
+                    <a href="https://www.handwriterspublication.com" target="_blank" class="fcontact">
+                        <span class="fcontact__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                        </span>
+                        <span class="fcontact__body">
+                            <span class="fcontact__label">Website</span>
+                            <span class="fcontact__value">handwriterspublication.com</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</footer>
+        <div class="footer__bottom">
+            <div class="container footer__bottom-inner">
+                <p>&copy; 2026 Handwriters Publication. All rights reserved.</p>
+                <p>Fast Track &middot; Scopus Indexed &middot; Peer Reviewed</p>
+            </div>
+        </div>
+    </footer>
+
+</div><!-- end .site-wrapper -->
 
 <!-- ========== ADMIN PANEL ========== -->
 <div class="admin-overlay" id="adminOverlay"></div>
@@ -198,13 +291,28 @@
         <p class="admin-welcome">Welcome, Admin!</p>
         <p class="admin-hint">Hover over any card to see <strong>Edit</strong> &amp; <strong>Delete</strong> controls.<br>Use the <strong>Add Journal</strong> button below the grid to add new tiles.</p>
 
+        <!-- Access Keys Management -->
+        <div class="access-keys-box">
+            <p class="access-keys-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.78 7.78 5.5 5.5 0 017.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                Access Keys
+            </p>
+            <div class="access-keys-list" id="accessKeysList">
+                <!-- Populated by JS -->
+            </div>
+            <div class="access-keys-add">
+                <input type="text" id="newAccessKeyLabel" class="aform-input" placeholder="Key label (e.g. John Doe)">
+                <button type="button" id="addAccessKeyBtn" class="gh-token-btn">Generate Key</button>
+            </div>
+        </div>
+
         <div class="gh-token-box">
           <p class="gh-token-label">GitHub Token <span class="gh-token-hint">(paste once — stored in this browser only)</span></p>
           <div class="gh-token-row">
             <input type="password" id="ghTokenInput" class="aform-input" placeholder="ghp_…" autocomplete="off">
             <button type="button" id="ghTokenSave" class="gh-token-btn">Save Token</button>
           </div>
-          <p class="gh-token-tip">Create at: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → <em>ryoikitenkaai/Journal</em> → Contents: Read &amp; Write</p>
+          <p class="gh-token-tip">Create at: GitHub &rarr; Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained &rarr; <em>ryoikitenkaai/Journal</em> &rarr; Contents: Read &amp; Write</p>
         </div>
 
         <button class="admin-logout-btn" id="adminLogout">Logout</button>

@@ -5,7 +5,13 @@
     "badge": "★ Q1 Ranked",
     "title": "International Journal of Advances in Signal and Image Sciences",
     "issn": "2457-0370",
-    "tags": ["Electronic Engineering", "Computer Science", "Biomedical Engineering", "Management", "Economics"],
+    "tags": [
+      "Electronic Engineering",
+      "Computer Science",
+      "Biomedical Engineering",
+      "Management",
+      "Economics"
+    ],
     "visitUrl": "https://xlescience.org/index.php/IJASIS/FocusandScope",
     "scopusUrl": "https://www.scopus.com/sourceid/21101274775#tabs=2"
   },
@@ -15,7 +21,11 @@
     "badge": null,
     "title": "Architectural Image Studies",
     "issn": "2184-8645",
-    "tags": ["Engineering", "Architecture", "Management"],
+    "tags": [
+      "Engineering",
+      "Architecture",
+      "Management"
+    ],
     "visitUrl": "https://journals.ap2.pt/index.php/ais",
     "scopusUrl": "https://www.scopus.com/sourceid/21101247624"
   },
@@ -23,9 +33,13 @@
     "id": 3,
     "num": "03",
     "badge": null,
-    "title": "MSW Management",
+    "title": "MSW Managementss",
     "issn": "1053-7899",
-    "tags": ["Multidisciplinary", "Scientific Work", "Management"],
+    "tags": [
+      "Multidisciplinary",
+      "Scientific Work",
+      "Management"
+    ],
     "visitUrl": "https://mswmanagementj.com/index.php/home/about",
     "scopusUrl": "https://www.scopus.com/sourceid/5300152536#tabs=0"
   },
@@ -35,7 +49,14 @@
     "badge": null,
     "title": "Advances in Consumer Research",
     "issn": "0098-9258",
-    "tags": ["Applied Psychology", "Marketing", "Economics", "Consumer Behaviour", "Management", "Business"],
+    "tags": [
+      "Applied Psychology",
+      "Marketing",
+      "Economics",
+      "Consumer Behaviour",
+      "Management",
+      "Business"
+    ],
     "visitUrl": "https://acr-journal.com",
     "scopusUrl": "https://www.scopus.com/sourceid/11600153426#tabs=2"
   },
@@ -45,7 +66,12 @@
     "badge": null,
     "title": "European Journal of Clinical Pharmacy",
     "issn": "2385-409X",
-    "tags": ["Pharmacy", "Dentistry", "Medicine", "Medical"],
+    "tags": [
+      "Pharmacy",
+      "Dentistry",
+      "Medicine",
+      "Medical"
+    ],
     "visitUrl": "https://farmclin.com",
     "scopusUrl": "https://www.scopus.com/sourceid/21100466202#tabs=0"
   },
@@ -55,7 +81,13 @@
     "badge": null,
     "title": "International Journal of Drug Delivery Technology",
     "issn": "0975-4415",
-    "tags": ["Pharmacology", "Toxicology", "Pharmaceutics", "Pharmaceutical Science", "Dentistry"],
+    "tags": [
+      "Pharmacology",
+      "Toxicology",
+      "Pharmaceutics",
+      "Pharmaceutical Science",
+      "Dentistry"
+    ],
     "visitUrl": "https://ijddt.com/",
     "scopusUrl": "https://www.scopus.com/sourceid/20500195212"
   }

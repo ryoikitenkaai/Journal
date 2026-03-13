@@ -127,10 +127,8 @@
     }
   }
 
-  // Access gate removed: always initialize site directly.
-  async function initAccessGate() {
+  async function initSite() {
     if (siteWrapper) {
-      siteWrapper.classList.remove('site-locked');
       siteWrapper.removeAttribute('style');
     }
     await renderCards();
@@ -620,6 +618,6 @@
   }
 
   /* ─────────────────────────── INIT ─────────────────────────── */
-  initAccessGate();
+  initSite();
 
 })();

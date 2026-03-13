@@ -8,7 +8,6 @@
   var GH_PATH   = 'journals.json';
   var GH_ACCESS_KEYS_PATH = 'access_keys.json';
   var GH_TOKEN_KEY = 'hwp_gh_token';
-  var ACCESS_KEY_STORAGE = 'hwp_access_key';
 
   function getToken()  { return localStorage.getItem(GH_TOKEN_KEY) || ''; }
   function saveToken(t){ localStorage.setItem(GH_TOKEN_KEY, t); }
@@ -77,12 +76,8 @@
   let journalsCache = null;
   let accessKeysCache = null;
 
-  /* ─────────────────────────── ACCESS GATE ─────────────────────────── */
-  const accessGate     = document.getElementById('accessGate');
+  /* ─────────────────────────── SITE INIT ─────────────────────────── */
   const siteWrapper    = document.getElementById('siteWrapper');
-  const accessKeyInput = document.getElementById('accessKeyInput');
-  const accessKeySubmit = document.getElementById('accessKeySubmit');
-  const gateError      = document.getElementById('gateError');
 
   async function loadAccessKeys() {
     if (accessKeysCache) return JSON.parse(JSON.stringify(accessKeysCache));
@@ -132,65 +127,14 @@
     }
   }
 
-  async function checkAccessKey(key) {
-    const keys = await loadAccessKeys();
-    return keys.some(function(k) { return k.key.toUpperCase() === key.toUpperCase(); });
-  }
-
-  function unlockSite() {
-    accessGate.classList.add('gate-hidden');
-    siteWrapper.classList.remove('site-locked');
-    siteWrapper.removeAttribute('style');
-    setTimeout(function() { accessGate.style.display = 'none'; }, 700);
-    // Render cards only after unlock
-    renderCards();
-  }
-
-  // On refresh, auto-unlock if the user already has a valid stored key.
+  // Access gate removed: always initialize site directly.
   async function initAccessGate() {
-    const storedKey = localStorage.getItem(ACCESS_KEY_STORAGE);
-    if (storedKey) {
-      const valid = await checkAccessKey(storedKey);
-      if (valid) {
-        unlockSite();
-        return;
-      }
+    if (siteWrapper) {
+      siteWrapper.classList.remove('site-locked');
+      siteWrapper.removeAttribute('style');
     }
-    // No valid stored key — show the gate
-    accessGate.style.display = 'flex';
-    siteWrapper.classList.add('site-locked');
-    siteWrapper.style.display = 'none';
-    accessKeyInput.value = '';
+    await renderCards();
   }
-
-  accessKeySubmit.addEventListener('click', async function() {
-    const key = accessKeyInput.value.trim();
-    if (!key) {
-      gateError.textContent = 'Please enter an access key.';
-      return;
-    }
-    accessKeySubmit.querySelector('span').textContent = 'Verifying…';
-    accessKeySubmit.disabled = true;
-
-    const valid = await checkAccessKey(key);
-    if (valid) {
-      localStorage.setItem(ACCESS_KEY_STORAGE, key);
-      gateError.textContent = '';
-      unlockSite();
-    } else {
-      gateError.textContent = 'Invalid access key. Please try again.';
-      accessKeyInput.value = '';
-      accessKeyInput.classList.add('shake');
-      setTimeout(function() { accessKeyInput.classList.remove('shake'); }, 600);
-      accessKeyInput.focus();
-    }
-    accessKeySubmit.querySelector('span').textContent = 'Unlock';
-    accessKeySubmit.disabled = false;
-  });
-
-  accessKeyInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') accessKeySubmit.click();
-  });
 
   /* ─────────────────────────── LOAD JOURNALS ─────────────────────────── */
   async function loadJournals() {
@@ -677,6 +621,5 @@
 
   /* ─────────────────────────── INIT ─────────────────────────── */
   initAccessGate();
-  // renderCards is called inside unlockSite() after authentication
 
 })();
